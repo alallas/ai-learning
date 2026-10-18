@@ -1,11 +1,22 @@
 
+import re
 import sys
 from pathlib import Path
 
 
+def normalize_text(texts):
+    # 先统一小写，再把所有标点替换成空格，保留字母和数字
+
+    # re.sub(pattern, repl, string)
+    # 1. pattern：要匹配的模式，通常是正则表达式。
+    # 2. repl：替换成什么内容。
+    # 3. string：要处理的原字符串。
+    return re.sub(r"[^a-z0-9\s]", " ", texts.lower())
+
+
 def find_most_freq_20_words(texts):
     counts = {}
-    for text in texts.split():
+    for text in normalize_text(texts).split():
         if text in counts:
             counts[text] += 1
         else:
@@ -15,7 +26,7 @@ def find_most_freq_20_words(texts):
 
 def find_most_freq_20_words_v2(texts):
     counts = {}
-    for text in texts.split():
+    for text in normalize_text(texts).split():
         counts[text] = counts.get(text, 0) + 1
     return sorted(counts.items(), key=lambda x: (-x[1], x[0]))[:20]
 
@@ -69,6 +80,7 @@ if __name__ == "__main__":
     print(result)
 
 
+# sorted(counts.items(), key=lambda x: x[1], reverse=True)[:20]的解释：
 # 假设统计结果是：
 # counts = {'apple': 5, 'banana': 3, 'orange': 8}
 
