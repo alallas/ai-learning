@@ -1,20 +1,72 @@
 
+import sys
+from pathlib import Path
+
+
 def find_most_freq_20_words(texts):
     counts = {}
     for text in texts.split():
-        if text in counts :
+        if text in counts:
             counts[text] += 1
-        else :
+        else:
             counts[text] = 1
-    return sorted(counts.items(), key = lambda x: x[1], reverse = True)[:20]
+    return sorted(counts.items(), key=lambda x: x[1], reverse=True)[:20]
 
 
 def find_most_freq_20_words_v2(texts):
     counts = {}
     for text in texts.split():
-        counts[text] =counts.get(text, 0) + 1
-    return sorted(counts.items(), key = lambda x: (-x[1], x[0]))[:20]
+        counts[text] = counts.get(text, 0) + 1
+    return sorted(counts.items(), key=lambda x: (-x[1], x[0]))[:20]
 
+
+def count_words_from_file(file_path):
+    # 打开文件，执行完：后面的内容就会关闭文件。
+    # 可以手写f = open()， text = f.read()， f.close()
+    # 但是用with更好，这就是 Python 里常见的“打开文件并读取内容”的标准写法。
+    with open(file_path, "r", encoding="utf-8") as f:
+        text = f.read()
+    return find_most_freq_20_words_v2(text)
+
+
+# 下面这一行表示：
+# __name__ 是 Python 里每个脚本都有的一个特殊变量
+# 当你直接运行这个文件，比如：python wordcount.py test_eng.txt
+# 那么 __name__ 的值就是 "__main__"，所以这段代码就会执行。
+
+# 如果这个文件被别的文件导入，比如：import wordcount
+# 那么 __name__ 就不是 "__main__"，这段代码就不会执行。
+
+if __name__ == "__main__":
+
+
+    # sys.argv 是 Python 运行时接收到的参数列表
+    # 运行 python wordcount.py test_eng.txt
+    # 那么 sys.argv 大概是：['wordcount.py', 'test_eng.txt']
+    # 长度是 2，所以这行判断通过。
+    # 如果你没传参数，或者传了多个参数，长度就不是 2，就会打印用法说明，并退出程序：sys.exit(1)，这里的 1 表示“退出码为 1”，通常表示出错。
+
+
+
+    if len(sys.argv) != 2:
+        print("用法：python wordcount.py <txt文件的相对路径>")
+        print("例如：python wordcount.py test_eng.txt")
+        print("或：python wordcount.py day3/test_eng.txt")
+        sys.exit(1)
+
+
+    # 拿到你传入的第一个参数，例如 test_eng.txt，转成 Path 对象，方便处理文件路径
+    # 判断这个路径对应的文件是否真的存在。如果不存在，就打印错误信息，并退出
+
+    file_path = Path(sys.argv[1])
+
+    if not file_path.exists():
+        print(f"文件不存在：{file_path}")
+        sys.exit(1)
+
+    # 执行文本统计
+    result = count_words_from_file(file_path)
+    print(result)
 
 
 # 假设统计结果是：
