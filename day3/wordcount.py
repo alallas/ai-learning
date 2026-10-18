@@ -9,6 +9,7 @@ def normalize_text(texts):
 
     # re.sub(pattern, repl, string)
     # 1. pattern：要匹配的模式，通常是正则表达式。
+    # （\s是空格）
     # 2. repl：替换成什么内容。
     # 3. string：要处理的原字符串。
     return re.sub(r"[^a-z0-9\s]", " ", texts.lower())
