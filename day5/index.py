@@ -60,3 +60,47 @@ print(c1.cumsum(axis=1))
 
 # axis=0 表示"沿着行的方向移动，把沿途的元素加起来"，而不是"得到每一行的和"。
 
+
+print('=============================')
+
+d1 = np.arange(10)**3
+print(d1, d1[2], d1[:], d1[2:5], d1[:6:2], d1[::-1])
+
+
+def f(x, y):
+    return 10 * x + y
+
+e1 = np.fromfunction(f, (5, 4), dtype=np.int_)
+print('=============================')
+print(e1, e1[2, 3], e1[:, 1], e1[1:3, 1], e1[1:3, :])
+
+
+
+
+f1 = np.arange(12).reshape(2, 2, 3)
+print(f1)
+
+
+g1 = np.floor(10* rg.random((3, 4)))
+
+print('=============================')
+print(g1, g1.ravel(), g1.ravel(order='F'), g1.reshape(2, 6), g1.T, )
+
+
+h1 = 10 * rg.random((2, 2))
+i1 = 10 * rg.random((2, 2))
+
+print('=============================')
+print(np.vstack((h1, i1)), np.hstack((h1, i1)))
+
+j1 = np.array([2, 3, 4])
+k1 = np.array([5, 6, 7])
+
+print(np.column_stack((j1, k1)))
+
+# 对于数字，r_就是把所有数字拼起来，成为一个数组
+# 对于一维数组，r_就是vstack，c_就是column_stack
+# 对于二维数组，r_就是vstack， c_就是hstack
+
+
+
