@@ -21,21 +21,21 @@ print(np.dot(c, d)) # [20 44]
 # 第0行: 1×0 + 2×1 + 3×2 + 4×3 = 0+2+6+12  = 20
 # 第1行: 5×0 + 6×1 + 7×2 + 8×3 = 0+6+14+24 = 44
 
-print(np.dot(c, e))
+print('---------------------', np.dot(c, e))
 
 
 def ndim1_sum(a1, a2):
     sum = 0
-    for (v, i) in a1:
-        sum = sum + (v * a2[i])
+    for v1, v2 in zip(a1, a2):
+        sum = sum + (v1 * v2)
     return sum
 
 
 def self_dot(a1, a2):
     # 排除其他类型，只允许数组类型
-    if (a1.ndim ==1 & a2.ndim ==1):
+    if (a1.ndim ==1 and a2.ndim ==1):
         return ndim1_sum(a1, a2)
-    elif ((a1.ndim ==1 & a2.ndim ==2) | (a1.ndim ==2 & a2.ndim ==1)):
+    elif ((a1.ndim ==1 and a2.ndim ==2) or (a1.ndim ==2 and a2.ndim ==1)):
         if (a1.shape[1] != a2.shape[0]):
             return
         two_array = a2
@@ -44,9 +44,24 @@ def self_dot(a1, a2):
             two_array = a1
             one_array = a2
         res = []
-        for (v, i) in two_array:
+        for i, v in two_array:
             res.append(ndim1_sum(v, one_array))
         return res
+    elif a1.ndim == 2 and a2.ndim == 2:
+        if (a1.shape[1] != a2.shape[0]):
+            return
+        # a1 = np.array([[1, 2, 3, 4, ], [5, 6, 7, 8, ]])
+        # a2 = np.array([[0, 1,], [2, 3] , [4, 5,] ,[6, 7, ]])
+        res = []
+        for row in a1:  # 遍历直接拿行
+            res_row = []
+            for col_ind in range(a2.shape[1]): # 遍历拿索引
+                # 取所有行，分别的每一个列
+                a2_cur = a2[:, col_ind]
+                res_row.append(ndim1_sum(row, a2_cur)) 
+            res.push(res_row) # 最后拼形状
+        return res
+
 
 
 
